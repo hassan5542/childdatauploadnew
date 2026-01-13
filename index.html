@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Household Child Entry</title>
+
+<style>
+*{
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background: linear-gradient(135deg,#3b82f6,#60a5fa);
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:20px;
+}
+
+.card{
+  width:100%;
+  max-width:360px;
+  background:#fff;
+  padding:20px;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.25);
+}
+
+h2{
+  text-align:center;
+  color:#2563eb;
+  margin-bottom:15px;
+}
+
+input, select, button{
+  width:100%;
+  max-width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+  font-size:14px;
+}
+
+input:focus, select:focus{
+  outline:none;
+  border-color:#2563eb;
+  box-shadow:0 0 0 2px rgba(37,99,235,.25);
+}
+
+button{
+  background:#2563eb;
+  color:white;
+  border:none;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#1e40af;
+}
+
+.view{
+  background:#16a34a;
+}
+
+.view:hover{
+  background:#15803d;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Household Child Entry</h2>
+
+  <input id="house" placeholder="House No">
+  <input id="child" placeholder="Child Name">
+  <input id="father" placeholder="Father Name">
+  <input id="address" placeholder="Address">
+
+  <select id="age">
+    <option value="">Select Age</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+  </select>
+
+  <input id="contact" placeholder="Contact Number">
+
+  <select id="day">
+    <option value="">Select Day</option>
+    <option>Monday</option>
+    <option>Tuesday</option>
+    <option>Wednesday</option>
+  </select>
+
+  <button onclick="save()">Save Record</button>
+  <button class="view" onclick="location.href='records.html'">View Records</button>
+</div>
+
+<script>
+function save(){
+  let data = {
+    house: house.value,
+    child: child.value,
+    father: father.value,
+    address: address.value,
+    age: age.value,
+    contact: contact.value,
+    day: day.value
+  };
+
+  let records = JSON.parse(localStorage.getItem("records")) || [];
+  records.push(data);
+  localStorage.setItem("records", JSON.stringify(records));
+
+  alert("Record Saved Successfully ✔");
+  document.querySelectorAll("input,select").forEach(e => e.value="");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Saved Records</title>
+<style>
+body{
+  font-family: Arial;
+  background:#f1f5f9;
+}
+.box{
+  width:95%;
+  margin:20px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:15px;
+}
+h2{text-align:center;color:#2563eb;}
+input,select,button{
+  padding:10px;
+  margin:5px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+button{
+  background:#2563eb;
+  color:white;
+  border:none;
+}
+.print{background:#16a34a;}
+.excel{background:#f59e0b;}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+th,td{
+  border:1px solid #ddd;
+  padding:8px;
+  text-align:center;
+}
+th{background:#2563eb;color:white;}
+.del{background:red;}
+</style>
+</head>
+
+<body>
+<div class="box">
+<h2>Child Records</h2>
+
+<input id="search" placeholder="Search House No" onkeyup="load()">
+
+<select id="dayFilter" onchange="load()">
+<option value="">All Days</option>
+<option>Monday</option>
+<option>Tuesday</option>
+<option>Wednesday</option>
+</select>
+
+<button class="print" onclick="window.print()">Print</button>
+<button class="excel" onclick="exportExcel()">Export Excel</button>
+<button onclick="location.href='index.html'">Back</button>
+
+<table>
+<thead>
+<tr>
+<th>House</th><th>Child</th><th>Father</th>
+<th>Age</th><th>Day</th><th>Delete</th>
+</tr>
+</thead>
+<tbody id="tbl"></tbody>
+</table>
+</div>
+
+<script>
+function load(){
+ let d=JSON.parse(localStorage.getItem("records"))||[];
+ let s=search.value;
+ let day=dayFilter.value;
+ let h="";
+ d.forEach((r,i)=>{
+  if((!s||r.house.includes(s))&&(!day||r.day==day)){
+   h+=`<tr>
+   <td>${r.house}</td>
+   <td>${r.child}</td>
+   <td>${r.father}</td>
+   <td>${r.age}</td>
+   <td>${r.day}</td>
+   <td><button class="del" onclick="del(${i})">X</button></td>
+   </tr>`;
+  }
+ });
+ tbl.innerHTML=h;
+}
+
+function del(i){
+ let d=JSON.parse(localStorage.getItem("records"));
+ d.splice(i,1);
+ localStorage.setItem("records",JSON.stringify(d));
+ load();
+}
+
+function exportExcel(){
+ let d=JSON.parse(localStorage.getItem("records"))||[];
+ let xls="House\tChild\tFather\tAge\tDay\n";
+ d.forEach(r=>{
+  xls+=`${r.house}\t${r.child}\t${r.father}\t${r.age}\t${r.day}\n`;
+ });
+ let a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([xls]));
+ a.download="child_data.xls";
+ a.click();
+}
+load();
+</script>
+</body>
+</html>
